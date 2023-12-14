@@ -4,7 +4,14 @@ import ARIDetails from "../steps/ARIDetails";
 import AdressDetails from "../steps/AdressDetails";
 import Description from "../steps/Description";
 import db from "../firebase";
-import { addDoc, collection, doc, getDoc, getDocs } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  updateDoc,
+} from "firebase/firestore";
 
 const StepContext = createContext();
 
@@ -75,12 +82,21 @@ const StepsProvider = ({ children }) => {
     }));
   };
 
-  const handleSave = (fieldName) => {
+  const handleSave = async (fieldName) => {
     setEditMode((prevEditMode) => ({
       ...prevEditMode,
       [fieldName]: false,
     }));
-    // You can add logic to save the value to your database here
+    const querySnapshot = await getDocs(collection(db, "userData"));
+    querySnapshot.forEach(async (docs) => {
+      // doc.data() is never undefined for query doc snapshots
+      // console.log(doc.id, " => ", doc.data());
+      const docID = docs.id;
+      const washingtonRef = doc(db, "userData", docID);
+      await updateDoc(washingtonRef, {
+        [fieldName]: values[fieldName],
+      });
+    });
   };
 
   const handleChange = (fieldName, e) => {
@@ -121,7 +137,6 @@ const StepsProvider = ({ children }) => {
       // doc.data() is never undefined for query doc snapshots
       // console.log(doc.id, " => ", doc.data());
       setValues(doc.data());
-
     });
   };
 
