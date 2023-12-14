@@ -4,7 +4,7 @@ import ARIDetails from "../steps/ARIDetails";
 import AdressDetails from "../steps/AdressDetails";
 import Description from "../steps/Description";
 import db from "../firebase";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, getDocs } from "firebase/firestore";
 
 const StepContext = createContext();
 
@@ -103,7 +103,7 @@ const StepsProvider = ({ children }) => {
     const result = await addDoc(collection(db, "userData"), {
       name: values.name,
       email: values.email,
-      number: values.city,
+      number: values.number,
       gender: values.gender,
       country: values.country,
       street: values.street,
@@ -114,6 +114,17 @@ const StepsProvider = ({ children }) => {
     });
     console.log(result);
   };
+
+  const getAllData = async () => {
+    const querySnapshot = await getDocs(collection(db, "userData"));
+    querySnapshot.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      // console.log(doc.id, " => ", doc.data());
+      setValues(doc.data());
+
+    });
+  };
+
   return (
     <StepContext.Provider
       value={{
@@ -129,6 +140,7 @@ const StepsProvider = ({ children }) => {
         handleNext,
         handleBack,
         handleSubmit,
+        getAllData,
       }}
     >
       {children}

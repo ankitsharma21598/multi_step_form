@@ -20,7 +20,7 @@ const StepperWithContent = () => {
             Attributes
           </div>
           <div
-            className={`w-1/2 ${
+            className={`w-1/2 border-r border-gray-400  ${
               step === 2 ? "bg-blue-500 text-white" : "bg-gray-200"
             } p-2 text-center cursor-pointer`}
             onClick={() => setStep(2)}
@@ -28,7 +28,7 @@ const StepperWithContent = () => {
             ARI Details
           </div>
           <div
-            className={`w-1/2 ${
+            className={`w-1/2 border-r border-gray-400 ${
               step === 3 ? "bg-blue-500 text-white" : "bg-gray-200"
             } p-2 text-center cursor-pointer`}
             onClick={() => setStep(3)}

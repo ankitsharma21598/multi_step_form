@@ -1,9 +1,11 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { StepContext } from "../context/StepsContext";
 
 const Attibutes = () => {
-  const {values,editMode,handleChange,handleSave,handleEdit,handleCancel}=useContext(StepContext)
-
+  const {values,editMode,handleChange,handleSave,handleEdit,handleCancel,getAllData}=useContext(StepContext)
+  useEffect(() => {
+    getAllData()
+  },[]);
   return (
     <>
       <div>
